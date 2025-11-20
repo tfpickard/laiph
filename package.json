@@ -1,0 +1,21 @@
+{
+  "name": "laiph-game-of-life",
+  "version": "1.0.0",
+  "description": "High-performance 3D/4D Game of Life with WebGPU",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "three": "^0.160.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.160.0",
+    "@webgpu/types": "^0.1.66",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.11"
+  }
+}

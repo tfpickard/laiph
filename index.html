@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D/4D Game of Life - WebGPU</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+      color: #e0e0e0;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+    }
+
+    #canvas {
+      flex: 1;
+      display: block;
+      cursor: grab;
+    }
+
+    #canvas:active {
+      cursor: grabbing;
+    }
+
+    #controls {
+      width: 320px;
+      background: rgba(20, 20, 30, 0.95);
+      border-left: 2px solid #00ffaa;
+      overflow-y: auto;
+      box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .controls-panel {
+      padding: 20px;
+    }
+
+    .control-section {
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #333;
+    }
+
+    .control-section:last-child {
+      border-bottom: none;
+    }
+
+    h3 {
+      color: #00ffaa;
+      margin-bottom: 15px;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #2a2a3e 0%, #1a1a2e 100%);
+      color: #e0e0e0;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: 1px solid #444;
+      min-width: 80px;
+    }
+
+    .btn:hover {
+      background: linear-gradient(135deg, #3a3a4e 0%, #2a2a3e 100%);
+      border-color: #00ffaa;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 255, 170, 0.2);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #00ffaa 0%, #00cc88 100%);
+      color: #0a0a0a;
+      border-color: #00ffaa;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #00cc88 0%, #00aa66 100%);
+      box-shadow: 0 4px 12px rgba(0, 255, 170, 0.4);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #ff9500 0%, #ff7700 100%);
+      color: #0a0a0a;
+      border-color: #ff9500;
+    }
+
+    .btn-secondary:hover {
+      background: linear-gradient(135deg, #ff7700 0%, #ff5500 100%);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ff5555 0%, #ff3333 100%);
+      color: #fff;
+      border-color: #ff5555;
+    }
+
+    .btn-danger:hover {
+      background: linear-gradient(135deg, #ff3333 0%, #ff1111 100%);
+    }
+
+    .slider-group, .select-group, .input-group {
+      margin-top: 12px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: #aaa;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: #2a2a3e;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #00ffaa;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 255, 170, 0.4);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #00ffaa;
+      cursor: pointer;
+      border: none;
+    }
+
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #444;
+      border-radius: 6px;
+      background: #1a1a2e;
+      color: #e0e0e0;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    select:hover {
+      border-color: #00ffaa;
+    }
+
+    select:focus {
+      outline: none;
+      border-color: #00ffaa;
+      box-shadow: 0 0 0 3px rgba(0, 255, 170, 0.1);
+    }
+
+    .rule-inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .input-group label {
+      margin: 0;
+      min-width: 60px;
+    }
+
+    .rule-input {
+      width: 60px;
+      padding: 8px;
+      border: 1px solid #444;
+      border-radius: 4px;
+      background: #1a1a2e;
+      color: #e0e0e0;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .rule-input:focus {
+      outline: none;
+      border-color: #00ffaa;
+    }
+
+    .stats {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      background: #1a1a2e;
+      border-radius: 6px;
+      border: 1px solid #333;
+    }
+
+    .stat-label {
+      color: #aaa;
+      font-size: 13px;
+    }
+
+    .stat-value {
+      color: #00ffaa;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .info ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .info li {
+      padding: 6px 0;
+      font-size: 12px;
+      color: #999;
+      line-height: 1.6;
+    }
+
+    .info strong {
+      color: #00ffaa;
+    }
+
+    #error {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 50, 50, 0.95);
+      color: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      max-width: 500px;
+      text-align: center;
+      display: none;
+      z-index: 1000;
+    }
+
+    /* Scrollbar styling */
+    #controls::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    #controls::-webkit-scrollbar-track {
+      background: #0a0a0a;
+    }
+
+    #controls::-webkit-scrollbar-thumb {
+      background: #00ffaa;
+      border-radius: 4px;
+    }
+
+    #controls::-webkit-scrollbar-thumb:hover {
+      background: #00cc88;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      #canvas {
+        height: 60vh;
+      }
+
+      #controls {
+        width: 100%;
+        height: 40vh;
+        border-left: none;
+        border-top: 2px solid #00ffaa;
+      }
+    }
+
+    /* Loading animation */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .loading {
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <div id="controls"></div>
+  <div id="error"></div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
