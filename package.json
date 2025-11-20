@@ -1,0 +1,24 @@
+{
+  "name": "laiph",
+  "version": "1.0.0",
+  "description": "3D/4D Game of Life - High-performance cellular automaton simulator",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "keywords": ["game-of-life", "cellular-automaton", "webgpu", "3d", "4d"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.2"
+  },
+  "dependencies": {
+    "@types/three": "^0.181.0",
+    "@webgpu/types": "^0.1.66",
+    "three": "^0.181.2"
+  }
+}
