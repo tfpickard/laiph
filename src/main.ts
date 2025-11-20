@@ -10,6 +10,7 @@ import { VoxelRenderer, VisualizationMode } from './renderer/VoxelRenderer';
 import { patterns3D, placePattern3D } from './patterns/patterns-3d';
 import { patterns4D, placePattern4D } from './patterns/patterns-4d';
 import { PerformanceMonitor, FrameTimer } from './utils/performance';
+import { downloadState, uploadState } from './utils/serialization';
 
 type Dimension = '3d' | '4d';
 
@@ -49,6 +50,8 @@ class Application {
   private cellCount: HTMLElement;
   private generationDisplay: HTMLElement;
   private gridInfo: HTMLElement;
+  private exportBtn: HTMLButtonElement;
+  private importBtn: HTMLButtonElement;
 
   constructor() {
     // Get canvas
@@ -90,6 +93,8 @@ class Application {
     this.cellCount = document.getElementById('cell-count') as HTMLElement;
     this.generationDisplay = document.getElementById('generation') as HTMLElement;
     this.gridInfo = document.getElementById('grid-info') as HTMLElement;
+    this.exportBtn = document.getElementById('export-btn') as HTMLButtonElement;
+    this.importBtn = document.getElementById('import-btn') as HTMLButtonElement;
 
     this.setupEventListeners();
   }
@@ -133,6 +138,9 @@ class Application {
     });
     
     this.applyRulesBtn.addEventListener('click', () => this.applyRules());
+    
+    this.exportBtn.addEventListener('click', () => this.exportState());
+    this.importBtn.addEventListener('click', () => this.importState());
   }
 
   async initialize(): Promise<void> {
@@ -332,6 +340,88 @@ class Application {
       errorDiv.textContent = message;
       controls.insertBefore(errorDiv, controls.firstChild);
     }
+  }
+
+  private async exportState(): Promise<void> {
+    try {
+      const rules = this.parseRules();
+      
+      if (this.dimension === '3d' && this.gameOfLife3D) {
+        const cells = await this.gameOfLife3D.getCells();
+        const filename = `game-of-life-3d-${Date.now()}.json`;
+        downloadState(
+          filename,
+          '3d',
+          this.gridSize,
+          this.gameOfLife3D.getGeneration(),
+          rules,
+          cells
+        );
+      } else if (this.dimension === '4d' && this.gameOfLife4D) {
+        const cells = await this.gameOfLife4D.getCells();
+        const size4d = Math.floor(this.gridSize * 0.5);
+        const filename = `game-of-life-4d-${Date.now()}.json`;
+        downloadState(
+          filename,
+          '4d',
+          size4d,
+          this.gameOfLife4D.getGeneration(),
+          rules,
+          cells
+        );
+      }
+    } catch (error) {
+      console.error('Failed to export state:', error);
+      this.showError('Failed to export state');
+    }
+  }
+
+  private importState(): void {
+    uploadState((state) => {
+      try {
+        // Stop simulation
+        this.isPlaying = false;
+        this.playPauseBtn.textContent = '▶ Play';
+        
+        // Update UI to match loaded state
+        this.dimensionSelect.value = state.dimension;
+        this.dimension = state.dimension;
+        
+        if (state.dimension === '3d') {
+          this.gridSizeSelect.value = state.gridSize.toString();
+          this.gridSize = state.gridSize;
+        } else {
+          // For 4D, find closest grid size option
+          this.gridSize = state.gridSize * 2;
+          this.gridSizeSelect.value = this.gridSize.toString();
+        }
+        
+        // Update rule inputs
+        this.survivalInput.value = state.rules.survivalMin === state.rules.survivalMax
+          ? state.rules.survivalMin.toString()
+          : `${state.rules.survivalMin},${state.rules.survivalMax}`;
+        this.birthInput.value = state.rules.birthMin === state.rules.birthMax
+          ? state.rules.birthMin.toString()
+          : `${state.rules.birthMin},${state.rules.birthMax}`;
+        
+        // Reinitialize with loaded state
+        this.updateDimension();
+        
+        // Load the cells
+        if (state.dimension === '3d' && this.gameOfLife3D) {
+          this.gameOfLife3D.seed(state.cells);
+        } else if (state.dimension === '4d' && this.gameOfLife4D) {
+          this.gameOfLife4D.seed(state.cells);
+        }
+        
+        this.updateVisualization();
+        
+        console.log('State imported successfully');
+      } catch (error) {
+        console.error('Failed to import state:', error);
+        this.showError('Failed to import state');
+      }
+    });
   }
 }
 
