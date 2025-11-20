@@ -27,8 +27,8 @@ class GameOfLifeApp {
   private lastStepTime = 0;
   private generation = 0;
 
-  private gridSize3D: [number, number, number] = [64, 64, 64];
-  private gridSize4D: [number, number, number, number] = [32, 32, 32, 32];
+  private gridSize3D: [number, number, number] = [40, 40, 40];
+  private gridSize4D: [number, number, number, number] = [24, 24, 24, 24];
 
   private animationFrameId: number | null = null;
 
@@ -87,10 +87,10 @@ class GameOfLifeApp {
   private async initGame3D(): Promise<void> {
     this.game3D = new GameOfLife3D(this.gpuEngine, {
       gridSize: this.gridSize3D,
-      surviveMin: 4,
-      surviveMax: 5,
-      birthMin: 5,
-      birthMax: 5,
+      surviveMin: 5,
+      surviveMax: 7,
+      birthMin: 6,
+      birthMax: 6,
     });
     await this.game3D.init();
     this.generation = 0;

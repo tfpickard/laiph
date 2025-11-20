@@ -115,15 +115,15 @@ export class Controls {
           <div class="rule-inputs">
             <div class="input-group">
               <label for="surviveMin">Survive:</label>
-              <input type="number" id="surviveMin" min="0" max="26" value="4" class="rule-input">
+              <input type="number" id="surviveMin" min="0" max="26" value="5" class="rule-input">
               <span>to</span>
-              <input type="number" id="surviveMax" min="0" max="26" value="5" class="rule-input">
+              <input type="number" id="surviveMax" min="0" max="26" value="7" class="rule-input">
             </div>
             <div class="input-group">
               <label for="birthMin">Birth:</label>
-              <input type="number" id="birthMin" min="0" max="26" value="5" class="rule-input">
+              <input type="number" id="birthMin" min="0" max="26" value="6" class="rule-input">
               <span>to</span>
-              <input type="number" id="birthMax" min="0" max="26" value="5" class="rule-input">
+              <input type="number" id="birthMax" min="0" max="26" value="6" class="rule-input">
             </div>
           </div>
         </div>
@@ -260,10 +260,10 @@ export class Controls {
         this.birthMinInput.max = '26';
         this.birthMaxInput.max = '26';
         // Default 3D rules
-        this.surviveMinInput.value = '4';
-        this.surviveMaxInput.value = '5';
-        this.birthMinInput.value = '5';
-        this.birthMaxInput.value = '5';
+        this.surviveMinInput.value = '5';
+        this.surviveMaxInput.value = '7';
+        this.birthMinInput.value = '6';
+        this.birthMaxInput.value = '6';
       }
 
       this.onRulesChanged();

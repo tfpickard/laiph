@@ -69,10 +69,10 @@ export class GameOfLife4D {
     if (initialState) {
       initData = initialState;
     } else {
-      // Random initialization (sparser for 4D)
+      // Random initialization (very sparse for 4D - ~3% density)
       initData = new Uint32Array(this.gridDataSize);
       for (let i = 0; i < this.gridDataSize; i++) {
-        initData[i] = Math.random() > 0.9 ? 1 : 0;
+        initData[i] = Math.random() > 0.97 ? 1 : 0;
       }
     }
 
@@ -233,10 +233,10 @@ export class GameOfLife4D {
     if (initialState) {
       initData = initialState;
     } else {
-      // Random initialization (sparser for 4D)
+      // Random initialization (very sparse for 4D - ~3% density)
       initData = new Uint32Array(this.gridDataSize);
       for (let i = 0; i < this.gridDataSize; i++) {
-        initData[i] = Math.random() > 0.9 ? 1 : 0;
+        initData[i] = Math.random() > 0.97 ? 1 : 0;
       }
     }
 

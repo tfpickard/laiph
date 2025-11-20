@@ -101,7 +101,8 @@ Choose from various pre-built patterns:
 
 - Select "3D" or "4D" from the dropdown
 - In 4D mode, use the W-Slice slider to explore different 3D cross-sections
-- Default grid sizes: 64³ for 3D, 32⁴ for 4D
+- Default grid sizes: 40³ for 3D, 24⁴ for 4D
+- Initial cell density: ~5% for 3D, ~3% for 4D
 
 ### Rule Customization
 
@@ -110,7 +111,7 @@ Adjust the Game of Life rules:
 - **Survive**: Min/Max neighbor count for cells to survive
 - **Birth**: Min/Max neighbor count for dead cells to become alive
 
-**Default 3D Rules**: Survive 4-5, Birth 5
+**Default 3D Rules**: Survive 5-7, Birth 6 (more stable patterns)
 **Default 4D Rules**: Survive 7-10, Birth 6-9
 
 ### Render Modes
@@ -185,11 +186,12 @@ The cellular automata computation is performed entirely on the GPU:
 
 ### Target Performance
 
-- **60 FPS** with 128³ grid on modern GPU (RTX 3060 or equivalent)
+- **60 FPS** with default 40³ grid on integrated graphics
+- **60 FPS** with 100³+ grids on modern discrete GPU (RTX 3060 or equivalent)
 - Actual performance depends on:
-  - Grid size
+  - Grid size (configurable in code)
   - Number of living cells
-  - Render mode
+  - Render mode (points fastest, cubes/spheres slower)
   - GPU capabilities
 
 ### Optimization Tips

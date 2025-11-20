@@ -32,7 +32,7 @@ export class VoxelRenderer {
   constructor(canvas: HTMLCanvasElement, config: VoxelRendererConfig) {
     this.gridSize = config.gridSize;
     this.renderMode = config.renderMode || 'cubes';
-    this.voxelSize = config.voxelSize || 1.0;
+    this.voxelSize = config.voxelSize || 1.2;
     this.maxInstances = this.gridSize[0] * this.gridSize[1] * this.gridSize[2];
 
     // Initialize Three.js scene
@@ -57,7 +57,7 @@ export class VoxelRenderer {
     this.camera = new Camera(
       canvas,
       center,
-      Math.max(...this.gridSize) * 2
+      Math.max(...this.gridSize) * 2.5
     );
 
     // Setup lighting

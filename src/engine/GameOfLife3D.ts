@@ -67,10 +67,10 @@ export class GameOfLife3D {
     if (initialState) {
       initData = initialState;
     } else {
-      // Random initialization
+      // Random initialization (sparse - ~5% density)
       initData = new Uint32Array(this.gridDataSize);
       for (let i = 0; i < this.gridDataSize; i++) {
-        initData[i] = Math.random() > 0.8 ? 1 : 0;
+        initData[i] = Math.random() > 0.95 ? 1 : 0;
       }
     }
 
@@ -188,10 +188,10 @@ export class GameOfLife3D {
     if (initialState) {
       initData = initialState;
     } else {
-      // Random initialization
+      // Random initialization (sparse - ~5% density)
       initData = new Uint32Array(this.gridDataSize);
       for (let i = 0; i < this.gridDataSize; i++) {
-        initData[i] = Math.random() > 0.8 ? 1 : 0;
+        initData[i] = Math.random() > 0.95 ? 1 : 0;
       }
     }
 
