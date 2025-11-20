@@ -131,6 +131,326 @@ export const PATTERNS_3D: Record<string, Pattern3D> = {
       [4, 4, 4], [5, 5, 5], [6, 6, 6], [7, 7, 7],
     ],
   },
+
+  // Toad (period-2 oscillator)
+  toad: {
+    name: 'Toad',
+    description: 'Period-2 oscillator (2D pattern in 3D space)',
+    size: [4, 4, 3],
+    cells: [
+      [1, 1, 1], [2, 1, 1], [3, 1, 1],
+      [0, 2, 1], [1, 2, 1], [2, 2, 1],
+    ],
+  },
+
+  // Beacon (period-2 oscillator)
+  beacon: {
+    name: 'Beacon',
+    description: 'Period-2 oscillator',
+    size: [4, 4, 3],
+    cells: [
+      [0, 0, 1], [1, 0, 1],
+      [0, 1, 1],
+      [3, 2, 1],
+      [2, 3, 1], [3, 3, 1],
+    ],
+  },
+
+  // Puffer train
+  pufferTrain: {
+    name: 'Puffer Train',
+    description: 'Leaves debris as it moves',
+    size: [7, 7, 5],
+    cells: [
+      [3, 1, 2], [4, 1, 2],
+      [2, 2, 2], [3, 2, 2], [3, 2, 3],
+      [3, 3, 1], [3, 3, 2], [4, 3, 2],
+      [1, 4, 2], [2, 4, 2], [3, 4, 2],
+    ],
+  },
+
+  // Lightweight spaceship
+  lwss: {
+    name: 'Lightweight Spaceship',
+    description: 'Fast moving spaceship',
+    size: [5, 4, 3],
+    cells: [
+      [1, 0, 1], [4, 0, 1],
+      [0, 1, 1],
+      [0, 2, 1], [4, 2, 1],
+      [0, 3, 1], [1, 3, 1], [2, 3, 1], [3, 3, 1],
+    ],
+  },
+
+  // Octahedron
+  octahedron: {
+    name: 'Octahedron',
+    description: 'Eight-sided polyhedron',
+    size: [5, 5, 5],
+    cells: [
+      [2, 2, 0],
+      [1, 2, 1], [2, 1, 1], [2, 2, 1], [2, 3, 1], [3, 2, 1],
+      [0, 2, 2], [1, 1, 2], [1, 2, 2], [1, 3, 2],
+      [2, 0, 2], [2, 1, 2], [2, 2, 2], [2, 3, 2], [2, 4, 2],
+      [3, 1, 2], [3, 2, 2], [3, 3, 2], [4, 2, 2],
+      [1, 2, 3], [2, 1, 3], [2, 2, 3], [2, 3, 3], [3, 2, 3],
+      [2, 2, 4],
+    ],
+  },
+
+  // Pyramid
+  pyramid: {
+    name: 'Pyramid',
+    description: 'Four-sided pyramid',
+    size: [7, 7, 4],
+    cells: [
+      // Base layer
+      [1, 1, 0], [2, 1, 0], [3, 1, 0], [4, 1, 0], [5, 1, 0],
+      [1, 2, 0], [2, 2, 0], [3, 2, 0], [4, 2, 0], [5, 2, 0],
+      [1, 3, 0], [2, 3, 0], [3, 3, 0], [4, 3, 0], [5, 3, 0],
+      [1, 4, 0], [2, 4, 0], [3, 4, 0], [4, 4, 0], [5, 4, 0],
+      [1, 5, 0], [2, 5, 0], [3, 5, 0], [4, 5, 0], [5, 5, 0],
+      // Second layer
+      [2, 2, 1], [3, 2, 1], [4, 2, 1],
+      [2, 3, 1], [3, 3, 1], [4, 3, 1],
+      [2, 4, 1], [3, 4, 1], [4, 4, 1],
+      // Third layer
+      [3, 3, 2],
+    ],
+  },
+
+  // Sphere
+  sphere: {
+    name: 'Sphere',
+    description: 'Spherical arrangement of cells',
+    size: [7, 7, 7],
+    cells: [
+      // Z=1
+      [3, 2, 1], [2, 3, 1], [3, 3, 1], [4, 3, 1], [3, 4, 1],
+      // Z=2
+      [2, 2, 2], [3, 2, 2], [4, 2, 2],
+      [2, 3, 2], [4, 3, 2],
+      [2, 4, 2], [3, 4, 2], [4, 4, 2],
+      // Z=3 (equator)
+      [1, 2, 3], [2, 2, 3], [3, 2, 3], [4, 2, 3], [5, 2, 3],
+      [1, 3, 3], [5, 3, 3],
+      [1, 4, 3], [2, 4, 3], [3, 4, 3], [4, 4, 3], [5, 4, 3],
+      // Z=4
+      [2, 2, 4], [3, 2, 4], [4, 2, 4],
+      [2, 3, 4], [4, 3, 4],
+      [2, 4, 4], [3, 4, 4], [4, 4, 4],
+      // Z=5
+      [3, 2, 5], [2, 3, 5], [3, 3, 5], [4, 3, 5], [3, 4, 5],
+    ],
+  },
+
+  // Helix
+  helix: {
+    name: 'Helix',
+    description: 'Spiral helix structure',
+    size: [7, 7, 10],
+    cells: [
+      [3, 1, 0], [4, 1, 0],
+      [5, 3, 1], [5, 4, 1],
+      [3, 5, 2], [4, 5, 2],
+      [1, 3, 3], [1, 4, 3],
+      [3, 1, 4], [4, 1, 4],
+      [5, 3, 5], [5, 4, 5],
+      [3, 5, 6], [4, 5, 6],
+      [1, 3, 7], [1, 4, 7],
+      [3, 1, 8], [4, 1, 8],
+    ],
+  },
+
+  // R-pentomino (methuselah)
+  rPentomino: {
+    name: 'R-Pentomino',
+    description: 'Classic methuselah pattern',
+    size: [3, 3, 3],
+    cells: [
+      [1, 0, 1], [2, 0, 1],
+      [0, 1, 1], [1, 1, 1],
+      [1, 2, 1],
+    ],
+  },
+
+  // Diehard
+  diehard: {
+    name: 'Diehard',
+    description: 'Long-lived pattern that eventually dies',
+    size: [8, 3, 3],
+    cells: [
+      [6, 0, 1],
+      [0, 1, 1], [1, 1, 1],
+      [1, 2, 1], [5, 2, 1], [6, 2, 1], [7, 2, 1],
+    ],
+  },
+
+  // Acorn
+  acorn: {
+    name: 'Acorn',
+    description: 'Methuselah with complex evolution',
+    size: [7, 3, 3],
+    cells: [
+      [1, 0, 1],
+      [3, 1, 1],
+      [0, 2, 1], [1, 2, 1], [4, 2, 1], [5, 2, 1], [6, 2, 1],
+    ],
+  },
+
+  // T-tetromino
+  tTetromino: {
+    name: 'T-Tetromino',
+    description: 'T-shaped pattern',
+    size: [3, 3, 3],
+    cells: [
+      [0, 0, 1], [1, 0, 1], [2, 0, 1],
+      [1, 1, 1],
+      [1, 2, 1],
+    ],
+  },
+
+  // Plus sign
+  plus: {
+    name: 'Plus Sign',
+    description: 'Plus-shaped pattern',
+    size: [5, 5, 3],
+    cells: [
+      [2, 0, 1], [2, 1, 1],
+      [0, 2, 1], [1, 2, 1], [2, 2, 1], [3, 2, 1], [4, 2, 1],
+      [2, 3, 1], [2, 4, 1],
+    ],
+  },
+
+  // Ring
+  ring: {
+    name: 'Ring',
+    description: 'Circular ring of cells',
+    size: [5, 5, 3],
+    cells: [
+      [1, 0, 1], [2, 0, 1], [3, 0, 1],
+      [0, 1, 1], [4, 1, 1],
+      [0, 2, 1], [4, 2, 1],
+      [0, 3, 1], [4, 3, 1],
+      [1, 4, 1], [2, 4, 1], [3, 4, 1],
+    ],
+  },
+
+  // Double helix
+  doubleHelix: {
+    name: 'Double Helix',
+    description: 'DNA-like double helix',
+    size: [8, 8, 12],
+    cells: [
+      // First strand
+      [2, 2, 0], [3, 2, 0],
+      [4, 3, 1], [5, 3, 1],
+      [4, 5, 2], [5, 5, 2],
+      [2, 6, 3], [3, 6, 3],
+      [2, 2, 4], [3, 2, 4],
+      [4, 3, 5], [5, 3, 5],
+      // Second strand
+      [5, 5, 0], [6, 5, 0],
+      [2, 4, 1], [3, 4, 1],
+      [2, 2, 2], [3, 2, 2],
+      [5, 1, 3], [6, 1, 3],
+      [5, 5, 4], [6, 5, 4],
+      [2, 4, 5], [3, 4, 5],
+    ],
+  },
+
+  // Galaxy
+  galaxy: {
+    name: 'Galaxy',
+    description: 'Spiral galaxy-like pattern',
+    size: [9, 9, 3],
+    cells: [
+      [0, 0, 1], [1, 0, 1], [2, 0, 1], [3, 0, 1], [4, 0, 1], [5, 0, 1],
+      [0, 1, 1], [1, 1, 1], [2, 1, 1], [3, 1, 1], [4, 1, 1], [5, 1, 1],
+      [0, 2, 1],
+      [8, 6, 1],
+      [3, 7, 1], [4, 7, 1], [5, 7, 1], [6, 7, 1], [7, 7, 1], [8, 7, 1],
+      [3, 8, 1], [4, 8, 1], [5, 8, 1], [6, 8, 1], [7, 8, 1], [8, 8, 1],
+    ],
+  },
+
+  // Twin bees
+  twinBees: {
+    name: 'Twin Bees',
+    description: 'Two interacting beehives',
+    size: [8, 5, 3],
+    cells: [
+      [1, 1, 1], [2, 1, 1], [5, 1, 1], [6, 1, 1],
+      [0, 2, 1], [3, 2, 1], [4, 2, 1], [7, 2, 1],
+      [0, 3, 1], [3, 3, 1], [4, 3, 1], [7, 3, 1],
+      [1, 4, 1], [2, 4, 1], [5, 4, 1], [6, 4, 1],
+    ],
+  },
+
+  // Bi-block
+  biBlock: {
+    name: 'Bi-Block',
+    description: 'Two blocks connected',
+    size: [4, 4, 4],
+    cells: [
+      [0, 0, 0], [1, 0, 0],
+      [0, 1, 0], [1, 1, 0],
+      [2, 2, 2], [3, 2, 2],
+      [2, 3, 2], [3, 3, 2],
+    ],
+  },
+
+  // Spacefiller
+  spacefiller: {
+    name: 'Spacefiller',
+    description: 'Pattern that fills space over time',
+    size: [5, 5, 5],
+    cells: [
+      [1, 1, 1], [2, 1, 1], [3, 1, 1],
+      [1, 2, 1], [3, 2, 1],
+      [1, 3, 1], [2, 3, 1], [3, 3, 1],
+      [2, 1, 2], [1, 2, 2], [3, 2, 2], [2, 3, 2],
+      [2, 2, 3],
+    ],
+  },
+
+  // Exploder
+  exploder: {
+    name: 'Exploder',
+    description: 'Rapidly expanding pattern',
+    size: [5, 5, 5],
+    cells: [
+      [0, 0, 2], [1, 0, 2], [2, 0, 2], [3, 0, 2], [4, 0, 2],
+      [0, 1, 2], [4, 1, 2],
+      [0, 2, 2], [2, 2, 2], [4, 2, 2],
+      [0, 3, 2], [4, 3, 2],
+      [0, 4, 2], [1, 4, 2], [2, 4, 2], [3, 4, 2], [4, 4, 2],
+    ],
+  },
+
+  // Pentadecathlon
+  pentadecathlon: {
+    name: 'Pentadecathlon',
+    description: 'Period-15 oscillator',
+    size: [10, 3, 3],
+    cells: [
+      [1, 1, 1], [2, 1, 1], [3, 1, 1], [4, 1, 1], [5, 1, 1],
+      [6, 1, 1], [7, 1, 1], [8, 1, 1],
+    ],
+  },
+
+  // Sidecar
+  sidecar: {
+    name: 'Sidecar',
+    description: 'Moving pattern with trailing effect',
+    size: [6, 6, 4],
+    cells: [
+      [2, 1, 1], [3, 1, 1],
+      [1, 2, 1], [2, 2, 1], [2, 2, 2],
+      [2, 3, 1], [2, 3, 2], [3, 3, 1],
+      [2, 4, 2], [3, 4, 2],
+    ],
+  },
 };
 
 // Generate random cloud cells

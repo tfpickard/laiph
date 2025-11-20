@@ -87,13 +87,49 @@ export class Controls {
             <label for="patternSelect">Pattern:</label>
             <select id="patternSelect">
               <option value="random">Random</option>
-              <option value="glider">Glider</option>
-              <option value="blinker3d">Blinker</option>
-              <option value="block">Block</option>
-              <option value="pulsar">Pulsar</option>
-              <option value="cross">Cross</option>
-              <option value="cube">Cube</option>
-              <option value="diagonal">Diagonal</option>
+              <optgroup label="Still Lifes">
+                <option value="block">Block</option>
+                <option value="biBlock">Bi-Block</option>
+                <option value="twinBees">Twin Bees</option>
+              </optgroup>
+              <optgroup label="Oscillators">
+                <option value="blinker3d">Blinker</option>
+                <option value="toad">Toad</option>
+                <option value="beacon">Beacon</option>
+                <option value="pulsar">Pulsar</option>
+                <option value="pentadecathlon">Pentadecathlon</option>
+              </optgroup>
+              <optgroup label="Spaceships">
+                <option value="glider">3D Glider</option>
+                <option value="lwss">Lightweight Spaceship</option>
+                <option value="pufferTrain">Puffer Train</option>
+                <option value="sidecar">Sidecar</option>
+              </optgroup>
+              <optgroup label="Methuselahs">
+                <option value="rPentomino">R-Pentomino</option>
+                <option value="acorn">Acorn</option>
+                <option value="diehard">Diehard</option>
+              </optgroup>
+              <optgroup label="Geometric Shapes">
+                <option value="cube">Cube</option>
+                <option value="octahedron">Octahedron</option>
+                <option value="pyramid">Pyramid</option>
+                <option value="sphere">Sphere</option>
+                <option value="cross">3D Cross</option>
+                <option value="plus">Plus Sign</option>
+                <option value="ring">Ring</option>
+              </optgroup>
+              <optgroup label="Helices & Spirals">
+                <option value="helix">Helix</option>
+                <option value="doubleHelix">Double Helix</option>
+                <option value="diagonal">Diagonal Line</option>
+              </optgroup>
+              <optgroup label="Other Patterns">
+                <option value="galaxy">Galaxy</option>
+                <option value="tTetromino">T-Tetromino</option>
+                <option value="spacefiller">Spacefiller</option>
+                <option value="exploder">Exploder</option>
+              </optgroup>
             </select>
           </div>
           <div class="select-group">
@@ -323,24 +359,84 @@ export class Controls {
     if (dimension === '4D') {
       this.patternSelect.innerHTML = `
         <option value="random">Random</option>
-        <option value="tesseract">Tesseract</option>
-        <option value="cross4d">4D Cross</option>
-        <option value="blinker4d">4D Blinker</option>
-        <option value="diagonal4d">4D Diagonal</option>
-        <option value="block4d">4D Block</option>
-        <option value="plane4d">4D Plane</option>
-        <option value="glider4d">4D Glider</option>
+        <optgroup label="Basic Shapes">
+          <option value="tesseract">Tesseract (Hypercube)</option>
+          <option value="hypersphere">Hypersphere</option>
+          <option value="hexadecachoron">16-Cell</option>
+          <option value="block4d">4D Block</option>
+          <option value="frame4d">4D Frame</option>
+        </optgroup>
+        <optgroup label="Crosses & Stars">
+          <option value="cross4d">4D Cross</option>
+          <option value="doubleCross4d">Double Cross</option>
+          <option value="star4d">4D Star</option>
+        </optgroup>
+        <optgroup label="Structures">
+          <option value="plane4d">4D Plane</option>
+          <option value="pyramid4d">4D Pyramid</option>
+          <option value="lattice4d">4D Lattice</option>
+          <option value="tube4d">4D Tube</option>
+        </optgroup>
+        <optgroup label="Curved Forms">
+          <option value="ring4d">4D Ring</option>
+          <option value="torus4d">4D Torus</option>
+          <option value="helix4d">4D Helix</option>
+          <option value="spiral4d">4D Spiral</option>
+          <option value="knot4d">4D Knot</option>
+        </optgroup>
+        <optgroup label="Dynamic">
+          <option value="glider4d">4D Glider</option>
+          <option value="blinker4d">4D Blinker</option>
+          <option value="spinner4d">4D Spinner</option>
+          <option value="diagonal4d">4D Diagonal</option>
+        </optgroup>
       `;
     } else {
       this.patternSelect.innerHTML = `
         <option value="random">Random</option>
-        <option value="glider">Glider</option>
-        <option value="blinker3d">Blinker</option>
-        <option value="block">Block</option>
-        <option value="pulsar">Pulsar</option>
-        <option value="cross">Cross</option>
-        <option value="cube">Cube</option>
-        <option value="diagonal">Diagonal</option>
+        <optgroup label="Still Lifes">
+          <option value="block">Block</option>
+          <option value="biBlock">Bi-Block</option>
+          <option value="twinBees">Twin Bees</option>
+        </optgroup>
+        <optgroup label="Oscillators">
+          <option value="blinker3d">Blinker</option>
+          <option value="toad">Toad</option>
+          <option value="beacon">Beacon</option>
+          <option value="pulsar">Pulsar</option>
+          <option value="pentadecathlon">Pentadecathlon</option>
+        </optgroup>
+        <optgroup label="Spaceships">
+          <option value="glider">3D Glider</option>
+          <option value="lwss">Lightweight Spaceship</option>
+          <option value="pufferTrain">Puffer Train</option>
+          <option value="sidecar">Sidecar</option>
+        </optgroup>
+        <optgroup label="Methuselahs">
+          <option value="rPentomino">R-Pentomino</option>
+          <option value="acorn">Acorn</option>
+          <option value="diehard">Diehard</option>
+        </optgroup>
+        <optgroup label="Geometric Shapes">
+          <option value="cube">Cube</option>
+          <option value="octahedron">Octahedron</option>
+          <option value="pyramid">Pyramid</option>
+          <option value="sphere">Sphere</option>
+          <option value="cross">3D Cross</option>
+          <option value="plus">Plus Sign</option>
+          <option value="ring">Ring</option>
+        </optgroup>
+        <optgroup label="Helices & Spirals">
+          <option value="helix">Helix</option>
+          <option value="doubleHelix">Double Helix</option>
+          <option value="diagonal">Diagonal Line</option>
+        </optgroup>
+        <optgroup label="Other Patterns">
+          <option value="galaxy">Galaxy</option>
+          <option value="tTetromino">T-Tetromino</option>
+          <option value="spacefiller">Spacefiller</option>
+          <option value="exploder">Exploder</option>
+        </optgroup>
       `;
     }
   }
