@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D/4D Game of Life</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #0a0a0a;
+      color: #ffffff;
+      overflow: hidden;
+    }
+    
+    #canvas-container {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+    
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    
+    #controls {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(20, 20, 30, 0.9);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      min-width: 300px;
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    }
+    
+    #controls h2 {
+      margin-bottom: 15px;
+      font-size: 18px;
+      color: #60a5fa;
+    }
+    
+    .control-group {
+      margin-bottom: 15px;
+    }
+    
+    .control-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 14px;
+      color: #94a3b8;
+    }
+    
+    .control-group input[type="range"] {
+      width: 100%;
+    }
+    
+    .control-group select,
+    .control-group input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      background: rgba(30, 30, 40, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      color: white;
+      font-size: 14px;
+    }
+    
+    button {
+      padding: 10px 16px;
+      margin: 5px 5px 5px 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    button.secondary {
+      background: rgba(100, 100, 120, 0.5);
+    }
+    
+    button.secondary:hover {
+      box-shadow: 0 4px 12px rgba(100, 100, 120, 0.3);
+    }
+    
+    #stats {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(20, 20, 30, 0.9);
+      backdrop-filter: blur(10px);
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      min-width: 200px;
+    }
+    
+    #stats .stat-line {
+      margin: 5px 0;
+      color: #94a3b8;
+    }
+    
+    #stats .stat-value {
+      color: #60a5fa;
+      font-weight: bold;
+    }
+    
+    .error-message {
+      background: rgba(220, 38, 38, 0.2);
+      border: 1px solid rgba(220, 38, 38, 0.5);
+      padding: 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+      color: #fca5a5;
+    }
+    
+    .value-display {
+      display: inline-block;
+      margin-left: 10px;
+      color: #60a5fa;
+      font-weight: 500;
+    }
+    
+    .button-group {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+  <div id="canvas-container">
+    <canvas id="webgpu-canvas"></canvas>
+    
+    <div id="controls">
+      <h2>⚡ Game of Life Controls</h2>
+      
+      <div class="control-group">
+        <label>Dimension</label>
+        <select id="dimension-select">
+          <option value="3d">3D</option>
+          <option value="4d">4D</option>
+        </select>
+      </div>
+      
+      <div class="control-group">
+        <label>Grid Size</label>
+        <select id="grid-size-select">
+          <option value="32">32³ (4D: 24⁴)</option>
+          <option value="64" selected>64³ (4D: 32⁴)</option>
+          <option value="128">128³ (4D: 48⁴)</option>
+        </select>
+      </div>
+      
+      <div class="button-group">
+        <button id="play-pause-btn">▶ Play</button>
+        <button id="step-btn" class="secondary">Step</button>
+        <button id="reset-btn" class="secondary">Reset</button>
+      </div>
+      
+      <div class="control-group">
+        <label>
+          Simulation Speed
+          <span class="value-display" id="speed-value">5</span> steps/sec
+        </label>
+        <input type="range" id="speed-slider" min="1" max="60" value="5">
+      </div>
+      
+      <div class="control-group" id="w-slice-control" style="display: none;">
+        <label>
+          W-Axis Slice
+          <span class="value-display" id="w-slice-value">0</span>
+        </label>
+        <input type="range" id="w-slice-slider" min="0" max="31" value="0">
+      </div>
+      
+      <div class="control-group">
+        <label>Visualization Mode</label>
+        <select id="viz-mode-select">
+          <option value="voxels">Solid Voxels</option>
+          <option value="points">Point Cloud</option>
+        </select>
+      </div>
+      
+      <div class="control-group">
+        <label>Pattern</label>
+        <select id="pattern-select">
+          <option value="random">Random</option>
+          <option value="glider">Glider</option>
+          <option value="blinker">Blinker</option>
+          <option value="pulsar">Pulsar</option>
+        </select>
+        <button id="load-pattern-btn" style="width: 100%; margin: 5px 0;">Load Pattern</button>
+      </div>
+      
+      <div class="control-group">
+        <label>
+          Random Density
+          <span class="value-display" id="density-value">15</span>%
+        </label>
+        <input type="range" id="density-slider" min="1" max="50" value="15">
+      </div>
+      
+      <h2 style="margin-top: 20px;">🎛️ Rules</h2>
+      
+      <div class="control-group">
+        <label>Survival (neighbors)</label>
+        <input type="text" id="survival-input" value="4,5" placeholder="e.g., 4,5">
+      </div>
+      
+      <div class="control-group">
+        <label>Birth (neighbors)</label>
+        <input type="text" id="birth-input" value="5" placeholder="e.g., 5">
+      </div>
+      
+      <button id="apply-rules-btn" style="width: 100%;">Apply Rules</button>
+      
+      <h2 style="margin-top: 20px;">💾 Save/Load</h2>
+      
+      <div class="button-group" style="width: 100%;">
+        <button id="export-btn" class="secondary" style="flex: 1;">Export State</button>
+        <button id="import-btn" class="secondary" style="flex: 1;">Import State</button>
+      </div>
+    </div>
+    
+    <div id="stats">
+      <div class="stat-line">FPS: <span class="stat-value" id="fps-value">0</span></div>
+      <div class="stat-line">Living Cells: <span class="stat-value" id="cell-count">0</span></div>
+      <div class="stat-line">Generation: <span class="stat-value" id="generation">0</span></div>
+      <div class="stat-line">Grid: <span class="stat-value" id="grid-info">64³</span></div>
+    </div>
+  </div>
+  
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
